@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://unpkg.com/konva@10/konva.min.js"></script>
+        <meta charset="utf-8" />
+        <title>Room Planner</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f4f5f7;
+                
+            }
+           
+            #konva-holder {
+                width: 120vmin;
+                height: 70vmin;
+                max-width: 95vw;
+                max-height: 95vh;
+                background: #ffffff;
+                box-shadow: 0 6px 24px rgba(16,24,40,0.08);
+                border: 1px solid #e6e9ee;
+                box-sizing: border-box;
+                
+                
+            }
+        </style>
+
+        <!-- load Konva first, then our script. Using defer preserves order and waits for DOM parsing -->
+        <script src="https://unpkg.com/konva@10/konva.min.js" defer></script>
         <script src="../components/roomCanvas.js" defer></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
->
     </head>
     <body>
-        <div id="konva-holder"></div>
+        <div id="konva-holder" aria-label="drawing area"></div>
     </body>
 </html>

@@ -1,32 +1,81 @@
-var stage = new Konva.Stage({ //creating a konva stage
-    container: "konva-holder", 
-    width: window.innerWidth,  
-    height: window.innerHeight,
-});
 
-var layer = new Konva.Layer(); //creating a konva layer
+// create the Konva stage sized to the container element
+var container = document.getElementById('konva-holder');
+//
+if (!container) {
+  document.addEventListener('DOMContentLoaded', function () {
+    initKonva();
+  });
+} else {
+  initKonva();
+}
 
-var circle = new Konva.Circle({
+function initKonva() {
+  var containerEl = container || document.getElementById('konva-holder');
+  var width = containerEl.clientWidth;
+  var height = containerEl.clientHeight;
+
+  var stage = new Konva.Stage({
+    container: 'konva-holder',
+    width: width,
+    height: height,
+  });
+
+  var layer = new Konva.Layer();
+
+  const group = new Konva.Group({
+    clip:{
+      x:50,
+      y:50,
+      width:200,
+      height:200
+
+    }
+      
+      
+  });
+
+  var circle = new Konva.Circle({
     x: stage.width() / 2,
     y: stage.height() / 2,
-    radius: 70,
-    fill: "red",
-    stroke: "black",
+    radius: Math.min(stage.width(), stage.height()) * 0.12, // scale radius to container
+    fill: 'red',
+    stroke: 'black',
     strokeWidth: 4,
-    
-    draggable: true, //allowing the circle to be draggable with the right trigger
+    draggable: true,
+  });
 
-})
+  var triangle = new Konva.RegularPolygon({
+    x: stage.width() / 2,
+    y: stage.height() / 2 + 150,
+    sides: 3,
+    radius: 50,
+    fill: 'blue',
+    stroke: 'black',
+    strokeWidth: 4,
+    draggable: true,
+  });
 
+  circle.on('mouseover', function () {
+    document.body.style.cursor = 'pointer';
+  });
+  circle.on('mouseout', function () {
+    document.body.style.cursor = 'default';
+  });
 
-circle.on('mouseover', function () {
-  document.body.style.cursor = 'pointer';
-});  //user has pressed mouse over the circle
-circle.on('mouseout', function () {
-  document.body.style.cursor = 'default';
-}); //user no longer holding mouse on the shape
+  layer.add(circle);
+  layer.add(triangle);
+  stage.add(layer);
 
+  // keep the stage sized to the container on window resize
+  window.addEventListener('resize', function () {
+    var w = containerEl.clientWidth;
+    var h = containerEl.clientHeight;
+    stage.width(w);
+    stage.height(h);
 
-layer.add(circle); //adding circle to layer 
-stage.add(layer); //adding layer to stage
-
+    // recenter and resize the circle a bit
+    circle.position({ x: stage.width() / 2, y: stage.height() / 2 });
+    circle.radius(Math.min(stage.width(), stage.height()) * 0.12);
+    stage.batchDraw();
+  })};
