@@ -23,17 +23,7 @@ function initKonva() {
 
   var layer = new Konva.Layer();
 
-  const group = new Konva.Group({
-    clip:{
-      x:50,
-      y:50,
-      width:200,
-      height:200
-
-    }
-      
-      
-  });
+  
 
   var circle = new Konva.Circle({
     x: stage.width() / 2,
