@@ -4,23 +4,86 @@
         <meta charset="utf-8" />
         <title>Room Planner</title>
         <style>
+            * {
+                box-sizing: border-box;
+            }
             html, body {
                 height: 100%;
                 margin: 0;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
             }
             body {
                 display: flex;
+                background: #f4f5f7;
+            }
+
+            #sidebar {
+                width: 280px;
+                background: #ffffff;
+                border-right: 1px solid #e6e9ee;
+                overflow-y: auto;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #sidebar h2 {
+                margin: 0 0 16px 0;
+                font-size: 18px;
+                color: #16182a;
+            }
+
+            .furniture-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .furniture-item {
+                padding: 12px;
+                background: #f8f9fa;
+                border: 1px solid #e6e9ee;
+                border-radius: 6px;
+                cursor: grab;
+                user-select: none;
+                transition: all 0.2s ease;
+            }
+
+            .furniture-item:hover {
+                background: #f0f1f3;
+                box-shadow: 0 2px 8px rgba(16,24,40,0.1);
+            }
+
+            .furniture-item:active {
+                cursor: grabbing;
+            }
+
+            .furniture-item strong {
+                display: block;
+                color: #16182a;
+                font-size: 14px;
+            }
+
+            .furniture-item small {
+                display: block;
+                color: #6f7a8e;
+                font-size: 12px;
+                margin-top: 4px;
+            }
+
+            #canvas-container {
+                flex: 1;
+                display: flex;
                 align-items: center;
                 justify-content: center;
-                background: #f4f5f7;
-                
+                padding: 20px;
             }
            
             #konva-holder {
-                width: 120vmin;
-                height: 70vmin;
-                max-width: 95vw;
-                max-height: 95vh;
+                width: 100%;
+                height: 100%;
+                max-width: 800px;
+                max-height: 600px;
                 background-color: #ffffff;
                 /* CSS graph-paper: light thin grid every 20px and slightly darker major grid every 100px */
                 background-image:
@@ -32,7 +95,7 @@
                 background-position: 0 0, 0 0, 0 0, 0 0;
                 box-shadow: 0 6px 24px rgba(16,24,40,0.08);
                 border: 1px solid #e6e9ee;
-                box-sizing: border-box;
+                position: relative;
             }
         </style>
 
@@ -41,6 +104,15 @@
         <script src="../components/roomCanvas.js" defer></script>
     </head>
     <body>
-        <div id="konva-holder" aria-label="drawing area"></div>
+        <div id="sidebar">
+            <h2>Furniture</h2>
+            <div id="furniture-list" class="furniture-list">
+                <!-- Populated by roomCanvas.js -->
+            </div>
+        </div>
+        
+        <div id="canvas-container">
+            <div id="konva-holder" aria-label="drawing area"></div>
+        </div>
     </body>
 </html>
