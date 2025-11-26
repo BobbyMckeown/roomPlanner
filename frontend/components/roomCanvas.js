@@ -28,7 +28,7 @@ function initKonva() {
     container: 'konva-holder',
     width: width,
     height: height,
-  }); //x
+  }); //creating kova stage object
 
   layer = new Konva.Layer();
   stage.add(layer);
@@ -39,45 +39,43 @@ function initKonva() {
     stage.width(w);
     stage.height(h);
     stage.batchDraw();
-  });
+  }); //handles window resize *required for furniture boxes
 
   containerEl.addEventListener('dragover', handleDragOver);
-  containerEl.addEventListener('drop', handleDrop);
+  containerEl.addEventListener('drop', handleDrop);//drag and drop functions 
 }
 
 // Load furniture data from JSON
 function loadFurnitureData() {
   fetch('../../backend/resources/furniture2D.JSON')
-    .then(response => response.json())
+    .then(response => response.json())//parse JSON data
     .then(data => {
       furnitureData = data;
-      populateFurniturePanel();
+      populateFurniturePanel();//populate sidebar with furniture items
     })
     .catch(error => {
       console.error('Error loading furniture data:', error);
-      var furnitureList = document.getElementById('furniture-list');
-      if (furnitureList) {
-        furnitureList.innerHTML = '<p style="color: red;">Error loading furniture</p>';
-      }
+     
     });
 }
 
-// Populate the sidebar with furniture items
+//populate the sidebar with furniture items
 function populateFurniturePanel() {
   var furnitureList = document.getElementById('furniture-list');
   furnitureList.innerHTML = '';
 
   furnitureData.forEach(function (item) {
-    var div = document.createElement('div');
-    div.className = 'furniture-item';
+    var div = document.createElement('div'); //create a div for each furniture item
+    div.className = 'furniture-item';//div. allows for styling as we create the div
     div.draggable = true;
-    div.innerHTML = '<strong>' + item.name + '</strong><small>' + item.category + '</small>';
+    div.innerHTML = item.name +" "+item.category; //displays name and category on the side bar
     
-    div.dataset.furniture = JSON.stringify(item);
+    div.dataset.furniture = JSON.stringify(item); //creates a data set that can be looked up again 
+    //makes it so the program will only loop through items once started 
 
-    div.addEventListener('dragstart', function (e) {
-      draggedItem = item;
-      e.dataTransfer.effectAllowed = 'copy';
+    div.addEventListener('dragstart', function (e) { //function to handle drag and drop while keeping data on each varient created 
+      draggedItem = item; 
+      e.dataTransfer.effectAllowed = 'copy'; // creates a copy of the item being dragged
       e.dataTransfer.setData('text/plain', JSON.stringify(item));
     });
 
@@ -85,14 +83,14 @@ function populateFurniturePanel() {
   });
 }
 
-// Handle drag over canvas
+//Handle drag over canvas
 function handleDragOver(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = 'copy';
   containerEl.style.opacity = '0.8';
 }
 
-// Handle drop on canvas
+//Handle drop on canvas
 function handleDrop(e) {
   e.preventDefault();
   containerEl.style.opacity = '1';
@@ -107,7 +105,7 @@ function handleDrop(e) {
   draggedItem = null;
 }
 
-// Add a furniture item to the canvas as a draggable Konva image or shape
+//Add a furniture item to the canvas as a draggable Konva image or shape
 function addFurnitureToCanvas(furnitureItem, x, y) {
   var imageObj = new Image();
   imageObj.onload = function () {
@@ -150,23 +148,13 @@ function addFurnitureToCanvas(furnitureItem, x, y) {
       y: y,
       width: furnitureItem.width,
       height: furnitureItem.height,
-      fill: '#cccccc',
-      stroke: '#666666',
+      fill: 'red',
       strokeWidth: 2,
       draggable: true,
-      name: 'furniture',
+      name: 'noimage',
     });
 
-    var text = new Konva.Text({
-      x: x,
-      y: y + furnitureItem.height / 2 - 8,
-      text: furnitureItem.name,
-      fontSize: 12,
-      fontFamily: 'Arial',
-      fill: '#333333',
-      align: 'center',
-      width: furnitureItem.width,
-    });
+  
 
     placeholder.on('mouseover', function () {
       document.body.style.cursor = 'move';
