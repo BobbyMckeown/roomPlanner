@@ -1,0 +1,47 @@
+[
+    {
+        "id": "sofa_1",
+        "name": "Sofa",
+        "category": "seating",
+        "type": "image",
+        "imagePath": "../data/images/sofa.png",
+        "width": 200,
+        "height": 100
+    },
+    {
+        "id": "chair_1",
+        "name": "chair",
+        "category": "seating",
+        "type": "image",
+        "imagePath": "../data/images/chair.jpeg",
+        "width": 80,
+        "height": 80
+    },
+    {
+        "id": "table_1",
+        "name": "Coffee Table",
+        "category": "tables",
+        "type": "image",
+        "imagePath": "../data/images/table.png",
+        "width": 120,
+        "height": 60
+    },
+    {
+        "id": "bed_1",
+        "name": "Bed",
+        "category": "bedroom",
+        "type": "image",
+        "imagePath": "../data/images/bed.png",
+        "width": 160,
+        "height": 200
+    },
+    {
+        "id": "desk_1",
+        "name": "Desk",
+        "category": "office",
+        "type": "image",
+        "imagePath": "../data/images/desk.png",
+        "width": 140,
+        "height": 70
+    }
+]
