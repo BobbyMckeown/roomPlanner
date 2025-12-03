@@ -43,6 +43,12 @@ function initKonva() {
 
   containerEl.addEventListener('dragover', handleDragOver);
   containerEl.addEventListener('drop', handleDrop);//drag and drop functions 
+  
+  window.addEventListener('keydown', function (e) {
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedFurniture) {
+      deleteFurnitureItem(selectedFurniture);
+    }
+  }); //allows user to delete furniture with backspace or delete
 }
 
 // Load furniture data from JSON
@@ -119,6 +125,11 @@ function addFurnitureToCanvas(furnitureItem, x, y) {
       name: 'furniture',
     });
 
+
+    konvaImage.on('click', function () {
+      selectFurnitureItem(this);
+    }); //identifys item when clicked
+
     konvaImage.on('mouseover', function () {
       document.body.style.cursor = 'move';
       this.strokeEnabled(true);
@@ -158,9 +169,19 @@ function addFurnitureToCanvas(furnitureItem, x, y) {
 
     placeholder.on('mouseover', function () {
       document.body.style.cursor = 'move';
+      this.strokeEnabled(true);
+      this.stroke('blue');
+      this.strokeWidth(2);
+      layer.draw();
     });
     placeholder.on('mouseout', function () {
       document.body.style.cursor = 'default';
+      this.strokeEnabled(false);
+      layer.draw();
+    });
+
+    placeholder.on('click', function () {
+      selectFurnitureItem(this);
     });
 
     layer.add(placeholder);
@@ -169,4 +190,31 @@ function addFurnitureToCanvas(furnitureItem, x, y) {
   };
 
   imageObj.src = furnitureItem.imagePath;
+}
+
+// Global variable to track selected furniture
+var selectedFurniture = null;
+
+// Select a furniture item (visual feedback with red border)
+function selectFurnitureItem(konvaShape) {
+  // Deselect previous selection
+  if (selectedFurniture) {
+    selectedFurniture.strokeEnabled(false);
+  }
+  
+  // Select new item
+  selectedFurniture = konvaShape;
+  konvaShape.strokeEnabled(true);
+  konvaShape.stroke('red');
+  konvaShape.strokeWidth(3);
+  layer.draw();
+}
+
+// Delete selected furniture item
+function deleteFurnitureItem(konvaShape) {
+  if (!konvaShape) return;
+  
+  konvaShape.destroy();
+  selectedFurniture = null;
+  layer.draw();
 };
