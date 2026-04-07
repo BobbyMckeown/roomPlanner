@@ -2,9 +2,15 @@
 // Global variables
 var stage;
 var layer;
+var drawLayer;
 var containerEl;
 var furnitureData = [];
 var draggedItem = null;
+var isDrawing = false;
+var drawPoints = [];
+var drawLine = null;
+var drawDots = [];
+var roomPolygon = null;
 
 // Initialize when DOM is ready
 var container = document.getElementById('konva-holder');
@@ -18,6 +24,7 @@ function initApp() {
   containerEl = container || document.getElementById('konva-holder');
   initKonva();
   loadFurnitureData();
+  initButtons();
 }
 
 function initKonva() {
@@ -28,7 +35,10 @@ function initKonva() {
     container: 'konva-holder',
     width: width,
     height: height,
-  }); //creating kova stage object
+  });
+
+  drawLayer = new Konva.Layer();
+  stage.add(drawLayer);
 
   layer = new Konva.Layer();
   stage.add(layer);
@@ -39,16 +49,113 @@ function initKonva() {
     stage.width(w);
     stage.height(h);
     stage.batchDraw();
-  }); //handles window resize *required for furniture boxes
+  });
 
   containerEl.addEventListener('dragover', handleDragOver);
-  containerEl.addEventListener('drop', handleDrop);//drag and drop functions 
-  
+  containerEl.addEventListener('drop', handleDrop);
+
   window.addEventListener('keydown', function (e) {
     if ((e.key === 'Delete' || e.key === 'Backspace') && selectedFurniture) {
       deleteFurnitureItem(selectedFurniture);
     }
-  }); //allows user to delete furniture with backspace or delete
+  });
+}
+
+// ── Room-draw mode ──
+function initButtons() {
+  var btnDraw = document.getElementById('btn-draw');
+  var btnReset = document.getElementById('btn-reset');
+
+  btnDraw.addEventListener('click', function () {
+    if (isDrawing) return;
+    isDrawing = true;
+    btnDraw.classList.add('active');
+    stage.container().style.cursor = 'crosshair';
+
+    stage.on('click.draw', function (e) {
+      var pos = stage.getPointerPosition();
+
+      // Close polygon when clicking near the first point
+      if (drawPoints.length >= 6) {
+        var dx = pos.x - drawPoints[0];
+        var dy = pos.y - drawPoints[1];
+        if (Math.sqrt(dx * dx + dy * dy) < 12) {
+          finishDrawing();
+          return;
+        }
+      }
+
+      drawPoints.push(pos.x, pos.y);
+
+      // Visual dot
+      var dot = new Konva.Circle({
+        x: pos.x,
+        y: pos.y,
+        radius: 4,
+        fill: '#3b82f6',
+      });
+      drawLayer.add(dot);
+      drawDots.push(dot);
+
+      // Connecting line
+      if (drawLine) drawLine.destroy();
+      drawLine = new Konva.Line({
+        points: drawPoints,
+        stroke: '#3b82f6',
+        strokeWidth: 2,
+        dash: [6, 3],
+      });
+      drawLayer.add(drawLine);
+      drawLayer.batchDraw();
+    });
+  });
+
+  btnReset.addEventListener('click', function () {
+    resetRoom();
+  });
+}
+
+function finishDrawing() {
+  isDrawing = false;
+  stage.off('click.draw');
+  stage.container().style.cursor = 'default';
+  var btnDraw = document.getElementById('btn-draw');
+  btnDraw.classList.remove('active');
+
+  // Remove temp visuals
+  drawDots.forEach(function (d) { d.destroy(); });
+  drawDots = [];
+  if (drawLine) { drawLine.destroy(); drawLine = null; }
+
+  // Draw filled room polygon
+  roomPolygon = new Konva.Line({
+    points: drawPoints,
+    fill: '#f0f4ff',
+    stroke: '#374151',
+    strokeWidth: 2,
+    closed: true,
+  });
+  drawLayer.add(roomPolygon);
+  drawLayer.batchDraw();
+}
+
+function resetRoom() {
+  isDrawing = false;
+  stage.off('click.draw');
+  stage.container().style.cursor = 'default';
+  var btnDraw = document.getElementById('btn-draw');
+  btnDraw.classList.remove('active');
+
+  drawPoints = [];
+  drawDots.forEach(function (d) { d.destroy(); });
+  drawDots = [];
+  if (drawLine) { drawLine.destroy(); drawLine = null; }
+  if (roomPolygon) { roomPolygon.destroy(); roomPolygon = null; }
+  drawLayer.destroyChildren();
+  layer.destroyChildren();
+  drawLayer.batchDraw();
+  layer.batchDraw();
+  selectedFurniture = null;
 }
 
 // Load furniture data from JSON
@@ -65,27 +172,54 @@ function loadFurnitureData() {
     });
 }
 
-//populate the sidebar with furniture items
+//populate the sidebar with collapsible furniture categories
 function populateFurniturePanel() {
-  var furnitureList = document.getElementById('furniture-list');
-  furnitureList.innerHTML = '';
+  var container = document.getElementById('furniture-categories');
+  container.innerHTML = '';
 
+  // Group items by category
+  var categories = {};
   furnitureData.forEach(function (item) {
-    var div = document.createElement('div'); //create a div for each furniture item
-    div.className = 'furniture-item';//div. allows for styling as we create the div
-    div.draggable = true;
-    div.innerHTML = item.name +" "+item.category; //displays name and category on the side bar
-    
-    div.dataset.furniture = JSON.stringify(item); //creates a data set that can be looked up again 
-    //makes it so the program will only loop through items once started 
+    var cat = item.category.charAt(0).toUpperCase() + item.category.slice(1);
+    if (!categories[cat]) categories[cat] = [];
+    categories[cat].push(item);
+  });
 
-    div.addEventListener('dragstart', function (e) { //function to handle drag and drop while keeping data on each varient created 
-      draggedItem = item; 
-      e.dataTransfer.effectAllowed = 'copy'; // creates a copy of the item being dragged
-      e.dataTransfer.setData('text/plain', JSON.stringify(item));
+  Object.keys(categories).forEach(function (catName) {
+    var group = document.createElement('div');
+    group.className = 'category-group';
+
+    var header = document.createElement('button');
+    header.className = 'category-header';
+    header.innerHTML = catName + '<span class="category-chevron">&#8250;</span>';
+
+    var itemsDiv = document.createElement('div');
+    itemsDiv.className = 'category-items';
+
+    header.addEventListener('click', function () {
+      header.classList.toggle('open');
+      itemsDiv.classList.toggle('open');
     });
 
-    furnitureList.appendChild(div);
+    categories[catName].forEach(function (item) {
+      var div = document.createElement('div');
+      div.className = 'furniture-item';
+      div.draggable = true;
+      div.textContent = item.name;
+      div.dataset.furniture = JSON.stringify(item);
+
+      div.addEventListener('dragstart', function (e) {
+        draggedItem = item;
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('text/plain', JSON.stringify(item));
+      });
+
+      itemsDiv.appendChild(div);
+    });
+
+    group.appendChild(header);
+    group.appendChild(itemsDiv);
+    container.appendChild(group);
   });
 }
 

@@ -1,0 +1,204 @@
+/* ── Reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+}
+body {
+    display: flex;
+    background: #e8ecf2;
+}
+
+/* ── Sidebar ── */
+#sidebar {
+    width: 250px;
+    min-width: 250px;
+    background: #1e1e2d;
+    color: #c9cdd4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    padding: 20px 16px;
+}
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-bottom {
+    padding-top: 16px;
+}
+
+.sidebar-heading {
+    margin: 0 0 12px 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #8a8e99;
+    text-transform: uppercase;
+}
+
+/* ── Buttons ── */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 8px;
+    transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background: #2563eb;
+}
+.btn-primary.active {
+    background: #1d4ed8;
+}
+
+.btn-dark {
+    background: #2a2a3d;
+    color: #c9cdd4;
+    border: 1px solid #3a3a50;
+}
+.btn-dark:hover {
+    background: #33334a;
+}
+
+.btn-link {
+    background: transparent;
+    color: #6b7280;
+    font-weight: 500;
+}
+.btn-link:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.btn-login {
+    background: #2a2a3d;
+    color: #c9cdd4;
+    border: 1px solid #3a3a50;
+}
+.btn-login:hover {
+    background: #3b82f6;
+    color: #ffffff;
+}
+
+/* ── Hint text ── */
+.hint-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #6b7280;
+    margin: 8px 0 0 0;
+}
+.hint-text strong {
+    color: #c9cdd4;
+}
+
+/* ── Divider ── */
+.divider {
+    border: none;
+    border-top: 1px solid #2e2e42;
+    margin: 16px 0;
+}
+
+/* ── Furniture categories (collapsible) ── */
+.category-group {
+    margin-bottom: 4px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    background: #2a2a3d;
+    color: #c9cdd4;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+.category-header:hover {
+    background: #33334a;
+}
+
+.category-chevron {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    color: #6b7280;
+}
+.category-header.open .category-chevron {
+    transform: rotate(90deg);
+}
+
+.category-items {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0 6px 12px;
+}
+.category-items.open {
+    display: flex;
+}
+
+/* ── Furniture item (inside category) ── */
+.furniture-item {
+    padding: 8px 10px;
+    background: #252538;
+    border: 1px solid #33334a;
+    border-radius: 4px;
+    cursor: grab;
+    user-select: none;
+    color: #c9cdd4;
+    font-size: 13px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.furniture-item:hover {
+    background: #2f2f48;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.furniture-item:active {
+    cursor: grabbing;
+}
+
+/* ── Canvas area ── */
+#canvas-container {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 20px;
+}
+
+#konva-holder {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    background-image: radial-gradient(circle, #bfc8d6 1px, transparent 1px);
+    background-size: 20px 20px;
+    box-shadow: 0 4px 20px rgba(16, 24, 40, 0.06);
+    border: 1px solid #d5dbe5;
+    position: relative;
+    overflow: hidden;
+}
