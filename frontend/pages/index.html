@@ -5,6 +5,10 @@
         <title>Room Planner</title>
         <link rel="stylesheet" href="pageStyling/style.css" />
         <script src="https://unpkg.com/konva@10/konva.min.js" defer></script>
+        <script type="importmap">
+            { "imports": { "three": "https://unpkg.com/three@0.164.1/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/" } }
+        </script>
+        <script src="../components/gltfPreview.js" type="module"></script>
         <script src="../components/furnitureHandler.js" defer></script>
         <script src="../components/roomDraw.js" defer></script>
         <script src="../components/sidebarPanel.js" defer></script>
@@ -35,7 +39,7 @@
             </div>
 
             <div class="sidebar-bottom">
-                <button id="btn-login" class="btn btn-login">Login</button>
+                <button id="btn-login" class="btn btn-login" onclick="window.location.href='login.html'">Login</button>
             </div>
         </div>
 

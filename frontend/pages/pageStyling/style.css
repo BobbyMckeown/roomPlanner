@@ -163,7 +163,10 @@ body {
 
 /* ── Furniture item (inside category) ── */
 .furniture-item {
-    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
     background: #252538;
     border: 1px solid #33334a;
     border-radius: 4px;
@@ -179,6 +182,22 @@ body {
 }
 .furniture-item:active {
     cursor: grabbing;
+}
+
+.furniture-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: #1e1e2d;
+    flex-shrink: 0;
+}
+
+.furniture-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ── Canvas area ── */

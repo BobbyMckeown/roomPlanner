@@ -47,8 +47,27 @@ function populateFurniturePanel() {
       var div = document.createElement('div');
       div.className = 'furniture-item';
       div.draggable = true;
-      div.textContent = item.name;
       div.dataset.furniture = JSON.stringify(item);
+
+      var thumb = document.createElement('img');
+      thumb.className = 'furniture-thumb';
+      thumb.alt = item.name;
+      thumb.src = '';
+      div.appendChild(thumb);
+
+      // Render a small preview thumbnail from the 3D model
+      if (item.modelPath && typeof window.renderGltfPreview === 'function') {
+        window.renderGltfPreview(item.modelPath, 128, 128, true)
+          .then(function (dataUrl) { thumb.src = dataUrl; })
+          .catch(function () { thumb.style.display = 'none'; });
+      } else {
+        thumb.style.display = 'none';
+      }
+
+      var label = document.createElement('span');
+      label.className = 'furniture-label';
+      label.textContent = item.name;
+      div.appendChild(label);
 
       div.addEventListener('dragstart', function (e) {
         draggedItem = item;
