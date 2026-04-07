@@ -13,6 +13,7 @@
         <script src="../components/roomDraw.js" defer></script>
         <script src="../components/sidebarPanel.js" defer></script>
         <script src="../components/roomCanvas.js" defer></script>
+        <script src="../components/authModal.js" defer></script>
     </head>
     <body>
         <div id="sidebar">
@@ -21,7 +22,7 @@
 
                 <button id="btn-draw" class="btn btn-primary">Draw Room</button>
                 <button id="btn-reset" class="btn btn-dark">Reset Room</button>
-                <button id="btn-3d" class="btn btn-link" disabled>View in 3D</button>
+                <button id="btn-3d" class="btn btn-link" onclick="window.location.href='3Dscene.html'">View in 3D</button>
 
                 <p class="hint-text">
                     Click <strong>Draw Room</strong>, then click points on
@@ -39,7 +40,33 @@
             </div>
 
             <div class="sidebar-bottom">
-                <button id="btn-login" class="btn btn-login" onclick="window.location.href='login.html'">Login</button>
+                <button id="btn-login" class="btn btn-login">Login</button>
+            </div>
+        </div>
+
+        <!-- Login / Register Modal -->
+        <div id="auth-overlay" class="auth-overlay hidden" style="display:none;">
+            <div class="auth-modal">
+                <button id="auth-close" class="auth-close">&times;</button>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+
+                <form id="login-form" class="auth-form">
+                    <input type="text" id="login-username" placeholder="Username" required autocomplete="username" />
+                    <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password" />
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p id="login-error" class="auth-error"></p>
+                </form>
+
+                <form id="register-form" class="auth-form" style="display:none;">
+                    <input type="text" id="reg-username" placeholder="Username" required autocomplete="username" />
+                    <input type="password" id="reg-password" placeholder="Password" required autocomplete="new-password" />
+                    <input type="password" id="reg-confirm" placeholder="Confirm Password" required autocomplete="new-password" />
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <p id="reg-error" class="auth-error"></p>
+                </form>
             </div>
         </div>
 
