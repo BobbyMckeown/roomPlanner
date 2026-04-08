@@ -5,15 +5,31 @@
         "category": "seating",
         "width": 80,
         "height": 80,
-        "modelPath": "../data/3Dseating/chair/scene.gltf"
+        "modelPath": "../data/3Dseating/chair (1).glb"
+    },
+    {
+        "id": "chair_2",
+        "name": "Ruined Chair",
+        "category": "seating",
+        "width": 80,
+        "height": 80,
+        "modelPath": "../data/3Dseating/post_apocalyptic_ruined_chair_style_1.glb"
     },
     {
         "id": "table_1",
-        "name": "Coffee Table",
+        "name": "Wooden Table",
         "category": "tables",
         "width": 120,
         "height": 60,
-        "modelPath": "../data/3Dtables/psx_wooden_table/scene.gltf"
+        "modelPath": "../data/3Dtables/psx_wooden_table/psx_wooden_table.glb"
+    },
+    {
+        "id": "table_2",
+        "name": "Hexagonal Table",
+        "category": "tables",
+        "width": 100,
+        "height": 100,
+        "modelPath": "../data/3Dtables/psx_wooden_table/hexagonal_table_01.glb"
     },
     {
         "id": "bed_1",
@@ -21,6 +37,6 @@
         "category": "bedroom",
         "width": 160,
         "height": 200,
-        "modelPath": "../data/3Dbedroom/pokemon_oras_comfortable_bed/scene.gltf"
+        "modelPath": "../data/3Dbedroom/pokemon_oras_comfortable_bed/bed_asset.glb"
     }
 ]

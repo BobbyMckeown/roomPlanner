@@ -1,8 +1,0 @@
-Model Information:
-* title:	[Pokemon: OR/AS] Comfortable Bed
-* source:	https://sketchfab.com/3d-models/pokemon-oras-comfortable-bed-59eef85df48e494781e8c3fd50b4bed2
-* author:	Starlight_lambda64 (https://sketchfab.com/Starlight_lambda64)
-
-Model License:
-* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
-* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
