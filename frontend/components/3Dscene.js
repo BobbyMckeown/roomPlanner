@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { addRoomToScene } from './3DrenderRoom.js';
+import { loadFurniture } from './3DloadFurniture.js';
 
 // ── Scene ──
 const scene = new THREE.Scene();
@@ -27,6 +28,9 @@ scene.add(dirLight);
 
 // ── Build the room (floor + walls) from saved 2D points ──
 addRoomToScene(scene);
+
+// ── Load furniture models ──
+loadFurniture(scene);
 
 // ── Back button ──
 const backBtn = document.createElement('button');

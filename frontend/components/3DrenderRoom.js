@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const WALL_HEIGHT = 2.5;   // metres
 const WALL_THICKNESS = 0.1;
@@ -34,7 +35,7 @@ function buildFloor(points) {
   shape.closePath();
 
   const geo = new THREE.ShapeGeometry(shape);
-  const mat = new THREE.MeshStandardMaterial({ color: 0xf0f4ff, side: THREE.DoubleSide });
+  const mat = new THREE.MeshStandardMaterial({ color: 0x8b4513, side: THREE.DoubleSide }); // Change colour for floor here
   const mesh = new THREE.Mesh(geo, mat);
   mesh.rotation.x = -Math.PI / 2;
   return mesh;
@@ -42,7 +43,7 @@ function buildFloor(points) {
 
 // Build wall meshes for every edge of the polygon
 function buildWalls(points) {
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0xcdd5e0, side: THREE.DoubleSide });
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, side: THREE.DoubleSide }); // Change colour for walls here
   const walls = [];
 
   for (let i = 0; i < points.length; i++) {
@@ -66,7 +67,7 @@ function buildWalls(points) {
 // Build a default 10x10 fallback floor
 function buildFallbackFloor() {
   const geo = new THREE.PlaneGeometry(10, 10);
-  const mat = new THREE.MeshStandardMaterial({ color: 0xf0f4ff, side: THREE.DoubleSide });
+  const mat = new THREE.MeshStandardMaterial({ color: 0x8b4513, side: THREE.DoubleSide }); // Change colour for fallback floor here
   const mesh = new THREE.Mesh(geo, mat);
   mesh.rotation.x = -Math.PI / 2;
   return mesh;
