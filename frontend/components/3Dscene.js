@@ -1,46 +1,46 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
- 
-// A scene requires 3 objects a camera, a renderer, and the scene itself
+import { addRoomToScene } from './3DrenderRoom.js';
 
-
-//scene is a container that holds all objects, lights, and cameras
+// ── Scene ──
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xd9e0ec);  // light grey so you can tell it loaded
+scene.background = new THREE.Color(0xd9e0ec);
 
-// camera setup perspective camera mimics human eye viewing, with parameters for field of view, aspect ratio, and near/far clipping planes
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 5, 8);   // elevated and pulled back so you look down at the floor
+// ── Camera ──
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 6, 8);
 camera.lookAt(0, 0, 0);
 
-//renderer draws the scene from the perspective of the camera onto a canvas element in the HTML document
+// ── Renderer ──
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);   // adds the <canvas> to the page
+document.body.appendChild(renderer.domElement);
 
-// orbit controls let you click-drag to rotate, scroll to zoom
+// ── Controls ──
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // ── Lighting ──
-// ambient gives a base level of light so nothing is pure black
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-scene.add(ambientLight);
-
-// directional simulates sunlight from one direction
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
 dirLight.position.set(5, 10, 5);
 scene.add(dirLight);
 
-// ── Floor plane ──
-// a flat 10x10 plane so you have something to see
-const floorGeometry = new THREE.PlaneGeometry(10, 10);
-const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xf0f4ff, side: THREE.DoubleSide });
-const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-floor.rotation.x = -Math.PI / 2;   // rotate flat (PlaneGeometry faces +Z by default)
-scene.add(floor);
+// ── Build the room (floor + walls) from saved 2D points ──
+addRoomToScene(scene);
+
+// ── Back button ──
+const backBtn = document.createElement('button');
+backBtn.textContent = '← Back to 2D';
+Object.assign(backBtn.style, {
+  position: 'absolute', top: '16px', left: '16px',
+  padding: '8px 18px', fontSize: '14px', fontWeight: '600',
+  background: '#1e1e2d', color: '#c9cdd4', border: '1px solid #3a3a50',
+  borderRadius: '6px', cursor: 'pointer', zIndex: '10'
+});
+backBtn.addEventListener('click', () => window.location.href = 'index.html');
+document.body.appendChild(backBtn);
 
 // ── Render loop ──
-// this runs every frame (~60fps) so the scene stays interactive
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -48,7 +48,7 @@ function animate() {
 }
 animate();
 
-// handle window resize so the canvas stays full-screen
+// ── Resize handler ──
 window.addEventListener('resize', function () {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();

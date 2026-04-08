@@ -22,7 +22,7 @@
 
                 <button id="btn-draw" class="btn btn-primary">Draw Room</button>
                 <button id="btn-reset" class="btn btn-dark">Reset Room</button>
-                <button id="btn-3d" class="btn btn-link" onclick="window.location.href='3Dscene.html'">View in 3D</button>
+                <button id="btn-3d" class="btn btn-link" onclick="localStorage.setItem('roomPoints', JSON.stringify(drawPoints)); window.location.href='3Dscene.html'">View in 3D</button>
 
                 <p class="hint-text">
                     Click <strong>Draw Room</strong>, then click points on
