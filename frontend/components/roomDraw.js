@@ -93,4 +93,8 @@ function resetRoom() {
   drawLayer.batchDraw();
   layer.batchDraw();
   selectedFurniture = null;
+
+  // Clear saved state
+  localStorage.removeItem('roomPoints');
+  localStorage.removeItem('roomFurniture');
 }

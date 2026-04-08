@@ -25,6 +25,7 @@ function initApp() {
   initKonva();
   loadFurnitureData();
   initButtons();
+  restoreCanvasState();
 }
 
 function initKonva() {
@@ -59,6 +60,47 @@ function initKonva() {
       deleteFurnitureItem(selectedFurniture);
     }
   });
+}
+
+// Restore room and furniture from localStorage ( after returning from 3D view) USE FOR DATABASE STORAGE IN FUTURE
+function restoreCanvasState() {
+  var savedPoints = localStorage.getItem('roomPoints');
+  if (savedPoints) {
+    drawPoints = JSON.parse(savedPoints);
+    if (drawPoints.length >= 6) {
+      roomPolygon = new Konva.Line({
+        points: drawPoints,
+        fill: '#f0f4ff',
+        stroke: '#374151',
+        strokeWidth: 2,
+        closed: true,
+      });
+      drawLayer.add(roomPolygon);
+      drawLayer.batchDraw();
+    }
+  }
+
+  var savedFurniture = localStorage.getItem('roomFurniture');
+  if (savedFurniture) {
+    var items = JSON.parse(savedFurniture);
+    // Wait for furnitureData to load so we can match IDs
+    var waitForData = setInterval(function () {
+      if (furnitureData.length === 0) return;
+      clearInterval(waitForData);
+
+      items.forEach(function (item) {
+        // Find matching furniture definition
+        var def = furnitureData.find(function (f) { return f.modelPath === item.modelPath; });
+        if (!def) return;
+
+        // x/y in localStorage is the centre, convert back to top-left
+        var topX = item.x - (item.width || def.width) / 2;
+        var topY = item.y - (item.height || def.height) / 2;
+
+        addFurnitureToCanvas(def, topX, topY);
+      });
+    }, 100);
+  }
 }
 
 
