@@ -35,7 +35,8 @@ function buildFloor(points) {
   shape.closePath();
 
   const geo = new THREE.ShapeGeometry(shape);
-  const mat = new THREE.MeshStandardMaterial({ color: 0x8b4513, side: THREE.DoubleSide }); // Change colour for floor here
+  const floorColour = localStorage.getItem('floorColour') || '#8b4513';
+  const mat = new THREE.MeshStandardMaterial({ color: floorColour, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(geo, mat);
   mesh.rotation.x = -Math.PI / 2;
   return mesh;
@@ -43,7 +44,8 @@ function buildFloor(points) {
 
 // Build wall meshes for every edge of the polygon
 function buildWalls(points) {
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, side: THREE.DoubleSide }); // Change colour for walls here
+  const wallColour = localStorage.getItem('wallColour') || '#c0c0c0';
+  const wallMat = new THREE.MeshStandardMaterial({ color: wallColour, side: THREE.DoubleSide });
   const walls = [];
 
   for (let i = 0; i < points.length; i++) {
@@ -67,7 +69,8 @@ function buildWalls(points) {
 // Build a default 10x10 fallback floor
 function buildFallbackFloor() {
   const geo = new THREE.PlaneGeometry(10, 10);
-  const mat = new THREE.MeshStandardMaterial({ color: 0x8b4513, side: THREE.DoubleSide }); // Change colour for fallback floor here
+  const floorColour = localStorage.getItem('floorColour') || '#8b4513';
+  const mat = new THREE.MeshStandardMaterial({ color: floorColour, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(geo, mat);
   mesh.rotation.x = -Math.PI / 2;
   return mesh;
