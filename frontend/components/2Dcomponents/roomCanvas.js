@@ -99,9 +99,10 @@ function restoreCanvasState() {
 
         addFurnitureToCanvas(def, topX, topY);
       });
-    }, 100);
+    }
+    , 100);
   }
+
+
+
 }
-
-
-
