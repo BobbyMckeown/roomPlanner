@@ -21,3 +21,5 @@ using (var scope = app.Services.CreateScope())
 app.UseCors();
 app.MapControllers();
 app.Run("http://localhost:5000");
+
+public partial class Program { }
